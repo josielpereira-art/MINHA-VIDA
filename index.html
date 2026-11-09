@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Josiel Januário Pereira | Futuro Cadete da AFA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#060B19',
+                            800: '#0B152C',
+                            700: '#132247',
+                            600: '#1D3557'
+                        },
+                        military: {
+                            blue: '#1E3E62',
+                            light: '#457B9D',
+                            accent: '#00F2FE'
+                        },
+                        gold: {
+                            DEFAULT: '#F5A623',
+                            light: '#FFD166',
+                            hover: '#E09212'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        tech: ['Orbitron', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Custom scrollbar and ambient glowing effects */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060B19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1D3557;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00F2FE;
+        }
+
+        .glow-cyan {
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.25);
+        }
+        .glow-gold {
+            box-shadow: 0 0 20px rgba(245, 166, 35, 0.25);
+        }
+        .glass-panel {
+            background: rgba(11, 21, 44, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 254, 0.15);
+        }
+        .glass-card {
+            background: rgba(19, 34, 71, 0.5);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 242, 254, 0.4);
+            transform: translateY(-4px);
+        }
+        
+        /* Grid background effect */
+        .bg-grid-pattern {
+            background-image: radial-gradient(rgba(0, 242, 254, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Scanline HUD effect */
+        .hud-overlay {
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            );
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="bg-navy-900 text-slate-100 font-sans antialiased selection:bg-military-accent selection:text-navy-900 overflow-x-hidden min-h-screen">
+
+    <!-- Toast Notification Box -->
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-40 glass-panel border-b border-cyan-500/20 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo / Badge -->
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-military-light to-navy-900 border border-military-accent/50 flex items-center justify-center text-military-accent group-hover:scale-105 transition-transform">
+                    <i class="fa-solid fa-plane-up text-lg group-hover:rotate-12 transition-transform"></i>
+                </div>
+                <div>
+                    <span class="font-tech text-lg font-bold tracking-wider text-white group-hover:text-military-accent transition-colors">JOSIEL.AFA</span>
+                    <span class="block text-[10px] text-slate-400 tracking-widest uppercase">Cadete em Formação</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Items -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#sobre" class="hover:text-military-accent transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-user-astronaut text-xs text-military-accent"></i> Sobre Mim
+                </a>
+                <a href="#meta-afa" class="hover:text-military-accent transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye text-xs text-gold"></i> Alvo AFA
+                </a>
+                <a href="#jogos" class="hover:text-military-accent transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad text-xs text-military-accent"></i> Hangar de Jogos
+                </a>
+                <a href="#comidas" class="hover:text-military-accent transition-colors flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-xs text-gold"></i> Favoritos
+                </a>
+            </nav>
+
+            <!-- Right Controls: Audio & Radar HUD -->
+            <div class="flex items-center gap-3">
+                <button id="sound-btn" onclick="toggleRadarBeep()" class="p-2.5 rounded-lg bg-navy-800 border border-cyan-500/30 text-slate-300 hover:text-military-accent hover:border-cyan-400 transition-all text-xs flex items-center gap-2" title="Som de Radar Ambient">
+                    <i id="sound-icon" class="fa-solid fa-volume-xmark"></i>
+                    <span class="hidden sm:inline font-tech text-[11px]">RADAR AUDIO</span>
+                </button>
+
+                <!-- Mobile menu toggle -->
+                <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-300 hover:text-white">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-navy-800/95 border-b border-cyan-500/20 px-4 pt-2 pb-6 space-y-3">
+            <a href="#sobre" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-military-accent border-b border-slate-700/50">
+                <i class="fa-solid fa-user-astronaut mr-2 text-military-accent"></i> Sobre Mim
+            </a>
+            <a href="#meta-afa" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-military-accent border-b border-slate-700/50">
+                <i class="fa-solid fa-bullseye mr-2 text-gold"></i> Alvo AFA
+            </a>
+            <a href="#jogos" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-military-accent border-b border-slate-700/50">
+                <i class="fa-solid fa-gamepad mr-2 text-military-accent"></i> Hangar de Jogos
+            </a>
+            <a href="#comidas" onclick="toggleMobileMenu()" class="block py-2 text-slate-200 hover:text-military-accent">
+                <i class="fa-solid fa-utensils mr-2 text-gold"></i> Favoritos
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="relative pt-20">
+
+        <!-- HERO SECTION WITH RADAR CANVAS -->
+        <section id="hero" class="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-grid-pattern py-12">
+            
+            <!-- Dynamic Canvas Radar Background -->
+            <canvas id="radarCanvas" class="absolute inset-0 w-full h-full opacity-35 pointer-events-none"></canvas>
+            
+            <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Hero Text Info -->
+                    <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                        
+                        <!-- Badges Header -->
+                        <div class="inline-flex flex-wrap justify-center lg:justify-start gap-2">
+                            <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-tech font-semibold bg-cyan-500/10 border border-cyan-500/40 text-military-accent">
+                                <span class="w-2 h-2 rounded-full bg-military-accent animate-ping"></span>
+                                EM FORMAÇÃO • 1º ANO ENSINO MÉDIO
+                            </span>
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-gold/10 border border-gold/40 text-gold">
+                                <i class="fa-solid fa-location-dot"></i> Campineiro do Sul, PR
+                            </span>
+                        </div>
+
+                        <!-- Main Title -->
+                        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+                            Josiel Januário <br class="hidden sm:inline"/>
+                            <span class="font-tech text-transparent bg-clip-text bg-gradient-to-r from-military-accent via-slate-100 to-gold">
+                                Pereira
+                            </span>
+                        </h1>
+
+                        <!-- Subtitle -->
+                        <p class="text-lg sm:text-xl text-slate-300 max-w-2xl font-light leading-relaxed">
+                            Futuro Cadete da <strong class="text-military-accent font-semibold">AFA (Academia da Força Aérea)</strong>. Apaixonado por meteorologia, caças militares e aviação comercial desde pequeno.
+                        </p>
+
+                        <!-- HUD Quick Telemetry Panel -->
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-2 max-w-lg mx-auto lg:mx-0">
+                            <div class="p-3 rounded-lg bg-navy-800/80 border border-slate-700/60 text-center lg:text-left">
+                                <span class="block text-[11px] text-slate-400 font-tech">ALTITUDE META</span>
+                                <span class="text-lg font-bold text-white font-tech">AFA 2028</span>
+                            </div>
+                            <div class="p-3 rounded-lg bg-navy-800/80 border border-slate-700/60 text-center lg:text-left">
+                                <span class="block text-[11px] text-slate-400 font-tech">ORIGEM</span>
+                                <span class="text-lg font-bold text-white font-tech truncate">Rosário do Ivaí</span>
+                            </div>
+                            <div class="col-span-2 sm:col-span-1 p-3 rounded-lg bg-navy-800/80 border border-slate-700/60 text-center lg:text-left">
+                                <span class="block text-[11px] text-slate-400 font-tech">ESTADO RADAR</span>
+                                <span class="text-lg font-bold text-military-accent font-tech flex items-center justify-center lg:justify-start gap-1">
+                                    <i class="fa-solid fa-crosshairs text-xs"></i> 100% FOCO
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <a href="#meta-afa" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-military-light to-navy-600 hover:from-cyan-500 hover:to-military-light text-white font-tech font-bold text-sm tracking-wider shadow-lg shadow-cyan-500/20 transition-all flex items-center justify-center gap-3 group">
+                                <span>PLANO DE ESTUDOS</span>
+                                <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <a href="#sobre" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-navy-800/80 hover:bg-navy-700 text-slate-200 border border-slate-700 font-medium text-sm transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-compass text-military-accent"></i>
+                                Conhecer Minha História
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right Visual Card (Pilot Helmet HUD Widget) -->
+                    <div class="lg:col-span-5 flex justify-center">
+                        <div class="relative w-full max-w-md p-6 rounded-2xl glass-panel glow-cyan">
+                            <!-- Tactical Top Bar -->
+                            <div class="flex items-center justify-between pb-4 border-b border-cyan-500/20 mb-4 font-tech text-xs text-slate-400">
+                                <span class="flex items-center gap-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                    SISTEMA OPERACIONAL JOSIEL
+                                </span>
+                                <span>VER: 2026.1</span>
+                            </div>
+
+                            <!-- Avatar & Quick Bio -->
+                            <div class="flex items-center gap-4 mb-6">
+                                <div class="relative w-20 h-20 rounded-2xl bg-gradient-to-tr from-military-blue via-navy-700 to-cyan-500 p-1 flex-shrink-0">
+                                    <div class="w-full h-full bg-navy-900 rounded-xl flex items-center justify-center text-3xl text-military-accent">
+                                        <i class="fa-solid fa-user-ninja"></i>
+                                    </div>
+                                    <div class="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-gold flex items-center justify-center text-navy-900 font-bold text-xs">
+                                        <i class="fa-solid fa-star"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-lg">Josiel Januário Pereira</h3>
+                                    <p class="text-xs text-slate-400">Alto, Pele Negra & Estudioso</p>
+                                    <p class="text-xs text-military-accent mt-1 font-medium"><i class="fa-solid fa-house-chimney text-[10px] mr-1"></i> Chácara União</p>
+                                </div>
+                            </div>
+
+                            <!-- Highlights Grid -->
+                            <div class="space-y-3">
+                                <div class="p-3 rounded-lg bg-navy-900/60 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-xs text-slate-300 flex items-center gap-2">
+                                        <i class="fa-solid fa-cloud-sun-rain text-cyan-400"></i> Paixão Principal
+                                    </span>
+                                    <span class="text-xs font-semibold text-white">Meteorologia & Aviação</span>
+                                </div>
+                                <div class="p-3 rounded-lg bg-navy-900/60 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-xs text-slate-300 flex items-center gap-2">
+                                        <i class="fa-solid fa-futbol text-emerald-400"></i> Lazer Favorito
+                                    </span>
+                                    <span class="text-xs font-semibold text-white">Futebol com Primos</span>
+                                </div>
+                                <div class="p-3 rounded-lg bg-navy-900/60 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-xs text-slate-300 flex items-center gap-2">
+                                        <i class="fa-solid fa-heart text-rose-400"></i> Destino Favorito
+                                    </span>
+                                    <span class="text-xs font-semibold text-white">Casa da Vó</span>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Quote Box -->
+                            <div class="mt-6 p-3.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs italic text-cyan-200 flex items-start gap-3">
+                                <i class="fa-solid fa-quote-left text-cyan-400 text-lg mt-0.5"></i>
+                                <span>"Estudando firme no Ensino Médio para alçar voos mais altos na Academia da Força Aérea."</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SOBRE MIM / HISTÓRIA -->
+        <section id="sobre" class="py-20 relative bg-navy-800/40 border-y border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="font-tech text-xs font-bold text-military-accent tracking-widest uppercase">Biografia & Raízes</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Quem é o Josiel?</h2>
+                    <div class="w-16 h-1 bg-gradient-to-r from-military-accent to-gold mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Card 1: Origem -->
+                    <div class="p-6 rounded-2xl glass-card transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            <span class="text-xs font-tech text-blue-400 font-semibold uppercase tracking-wider">Nascimento & Origem</span>
+                            <h3 class="text-xl font-bold text-white mt-1 mb-3">Rosário do Ivaí (2010)</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Nasci no ano de 2010 no município de Rosário do Ivaí. Hoje moro no distrito de <strong>Campineiro do Sul</strong>, em uma pequena chácara chamada <strong>Chácara União</strong>. Sou um jovem de pele negra, alto e determinado a buscar meus sonhos com muita fé e estudo.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-calendar mr-1"></i> Ano de 2010</span>
+                            <span class="text-blue-400 font-semibold">Chácara União</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Paixão por Aviação -->
+                    <div class="p-6 rounded-2xl glass-card transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-plane-tail"></i>
+                            </div>
+                            <span class="text-xs font-tech text-cyan-400 font-semibold uppercase tracking-wider">Desde Criança</span>
+                            <h3 class="text-xl font-bold text-white mt-1 mb-3">Aviação & Meteorologia</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Desde pequeno sou fascinado pelo céu. Adoro observar as formações de nuvens, entender a meteorologia e estudar sobre aviões comerciais e jatos de caça militares. Essa paixão é o combustível para meu grande objetivo profissional.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-cloud text-cyan-400 mr-1"></i> Fenômenos do Céu</span>
+                            <span class="text-cyan-400 font-semibold">Aviação Militar</span>
+                        </div>
+                    </div>
+
+                    <!-- Card 3: Lazer & Família -->
+                    <div class="p-6 rounded-2xl glass-card transition-all flex flex-col justify-between">
+                        <div>
+                            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-xl mb-6">
+                                <i class="fa-solid fa-futbol"></i>
+                            </div>
+                            <span class="text-xs font-tech text-emerald-400 font-semibold uppercase tracking-wider">Momentos Especiais</span>
+                            <h3 class="text-xl font-bold text-white mt-1 mb-3">Futebol na Rua & Casa da Vó</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Quando não estou estudando, gosto de ir até a casa da minha avó e jogar bola na rua com meus primos. São esses momentos simples de diversão, união familiar e risadas que renovam minhas energias para continuar firme nos estudos.
+                            </p>
+                        </div>
+                        <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-users mr-1"></i> Com os Primos</span>
+                            <span class="text-emerald-400 font-semibold">Casa da Vó</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- OBJETIVO PRINCIPAL: META AFA & ESTUDOS -->
+        <section id="meta-afa" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <!-- Left Column: Objective Description -->
+                    <div class="lg:col-span-6 space-y-6">
+                        <span class="font-tech text-xs font-bold text-gold tracking-widest uppercase">Missão de Vida</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white">
+                            O Sonho de Fardamento: <br/>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-gold to-amber-300">
+                                Academia da Força Aérea (AFA)
+                            </span>
+                        </h2>
+
+                        <p class="text-slate-300 leading-relaxed">
+                            Estou no <strong>1º ano do Ensino Médio</strong> e mantenho uma rotina contínua de dedicação aos estudos. Sei que o concurso para a AFA exige alta disciplina em Matemática, Física, Português e Inglês.
+                        </p>
+                        <p class="text-slate-300 leading-relaxed">
+                            Minha meta é concluir o Ensino Médio preparado para prestar o exame, conquistar minha vaga na AFA e me formar oficial aviador da Força Aérea Brasileira.
+                        </p>
+
+                        <!-- Interactive Study Status Card -->
+                        <div class="p-6 rounded-2xl bg-navy-800 border border-gold/30 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="font-tech text-sm font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-graduation-cap text-gold"></i>
+                                    SIMULADOR DE PROGRESSO DE ESTUDOS
+                                </span>
+                                <span id="progress-percent" class="font-tech text-sm font-extrabold text-gold">75%</span>
+                            </div>
+
+                            <!-- Progress Bar -->
+                            <div class="w-full bg-navy-900 rounded-full h-3 p-0.5 border border-slate-700">
+                                <div id="progress-bar-fill" class="bg-gradient-to-r from-gold via-amber-400 to-cyan-400 h-full rounded-full transition-all duration-500" style="width: 75%"></div>
+                            </div>
+
+                            <!-- Interactive Checkbox Routine -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
+                                <label class="flex items-center gap-2.5 p-2 rounded-lg bg-navy-900/70 border border-slate-800 cursor-pointer hover:border-gold/50 transition-colors">
+                                    <input type="checkbox" checked onchange="updateStudyProgress()" class="study-check rounded accent-gold">
+                                    <span class="text-slate-200">Matemática & Álgebra</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-2 rounded-lg bg-navy-900/70 border border-slate-800 cursor-pointer hover:border-gold/50 transition-colors">
+                                    <input type="checkbox" checked onchange="updateStudyProgress()" class="study-check rounded accent-gold">
+                                    <span class="text-slate-200">Física & Mecânica</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-2 rounded-lg bg-navy-900/70 border border-slate-800 cursor-pointer hover:border-gold/50 transition-colors">
+                                    <input type="checkbox" checked onchange="updateStudyProgress()" class="study-check rounded accent-gold">
+                                    <span class="text-slate-200">Português & Redação</span>
+                                </label>
+                                <label class="flex items-center gap-2.5 p-2 rounded-lg bg-navy-900/70 border border-slate-800 cursor-pointer hover:border-gold/50 transition-colors">
+                                    <input type="checkbox" onchange="updateStudyProgress()" class="study-check rounded accent-gold">
+                                    <span class="text-slate-200">Meteorologia Básica</span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Column: Interactive Meteorology & Aircraft Deck -->
+                    <div class="lg:col-span-6">
+                        <div class="p-6 rounded-2xl glass-panel border border-cyan-500/30 space-y-6">
+                            
+                            <!-- Deck Header Tabs -->
+                            <div class="flex items-center justify-between border-b border-slate-700/60 pb-4">
+                                <span class="font-tech text-xs text-military-accent font-bold tracking-wider">
+                                    <i class="fa-solid fa-jet-fighter mr-1"></i> PAINEL METEO-AÉREO
+                                </span>
+                                <div class="flex gap-2">
+                                    <button onclick="switchTab('meteorology')" id="tab-meteo-btn" class="px-3 py-1 rounded text-xs font-tech bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">METEO</button>
+                                    <button onclick="switchTab('aviation')" id="tab-avia-btn" class="px-3 py-1 rounded text-xs font-tech bg-navy-800 text-slate-400 border border-slate-700">CAÇAS & AVIAÇÃO</button>
+                                </div>
+                            </div>
+
+                            <!-- Tab 1 Content: Meteorology -->
+                            <div id="tab-meteorology" class="space-y-4">
+                                <h3 class="font-bold text-white text-lg flex items-center gap-2">
+                                    <i class="fa-solid fa-cloud-bolt text-cyan-400"></i> Observatório Meteorológico
+                                </h3>
+                                <p class="text-slate-300 text-sm">
+                                    O estudo do tempo é vital para a aviação militar e civil. Aqui estão alguns fenômenos observados no cotidiano da aviação:
+                                </p>
+                                
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                    <div onclick="showMeteoDetail('Cumulonimbus', 'Nuvens verticais gigantes de tempestade. Exigem atenção total dos pilotos devido a turbulências severas.')" class="p-3 rounded-xl bg-navy-900/80 border border-slate-800 hover:border-cyan-400/60 cursor-pointer transition-all">
+                                        <div class="flex items-center justify-between text-xs text-cyan-400 font-tech mb-1">
+                                            <span>NUVEM CB</span>
+                                            <i class="fa-solid fa-bolt"></i>
+                                        </div>
+                                        <h4 class="font-bold text-white text-sm">Cumulonimbus</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Nuvem de grande desenvolvimento vertical.</p>
+                                    </div>
+                                    <div onclick="showMeteoDetail('Cirrus', 'Nuvens altas de cristais de gelo, indicando mudanças de tempo nas próximas 24 horas.')" class="p-3 rounded-xl bg-navy-900/80 border border-slate-800 hover:border-cyan-400/60 cursor-pointer transition-all">
+                                        <div class="flex items-center justify-between text-xs text-cyan-400 font-tech mb-1">
+                                            <span>NUVEM CI</span>
+                                            <i class="fa-solid fa-snowflake"></i>
+                                        </div>
+                                        <h4 class="font-bold text-white text-sm">Cirrus</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Aspecto delicado e filamentoso em altitude.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tab 2 Content: Aviation -->
+                            <div id="tab-aviation" class="hidden space-y-4">
+                                <h3 class="font-bold text-white text-lg flex items-center gap-2">
+                                    <i class="fa-solid fa-plane text-gold"></i> Aeronaves Destaque (FAB & Comercial)
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="p-3.5 rounded-xl bg-navy-900/80 border border-slate-800 flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-lg bg-gold/10 text-gold flex items-center justify-center font-bold text-lg">
+                                                <i class="fa-solid fa-jet-fighter"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-white text-sm">F-39 Gripen</h4>
+                                                <span class="text-xs text-slate-400">Caça Supersônico Multimissão FAB</span>
+                                            </div>
+                                        </div>
+                                        <span class="font-tech text-xs text-gold">Mach 2.0</span>
+                                    </div>
+
+                                    <div class="p-3.5 rounded-xl bg-navy-900/80 border border-slate-800 flex items-center justify-between">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-lg">
+                                                <i class="fa-solid fa-plane-departure"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="font-bold text-white text-sm">A-29 Super Tucano</h4>
+                                                <span class="text-xs text-slate-400">Ataque Leve & Treinamento AFA</span>
+                                            </div>
+                                        </div>
+                                        <span class="font-tech text-xs text-cyan-400">Treinador AFA</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Meteo Info Box -->
+                            <div id="meteo-detail-box" class="p-3 rounded-lg bg-navy-900 border border-cyan-500/20 text-xs text-slate-300">
+                                💡 <em>Clique nos cards acima para explorar detalhes das formações de nuvens e aeronaves.</em>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MEUS JOGOS FAVORITOS -->
+        <section id="jogos" class="py-20 bg-navy-800/40 border-y border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                    <div>
+                        <span class="font-tech text-xs font-bold text-military-accent tracking-widest uppercase">Hangar de Lazer</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Jogos Favoritos 🎮</h2>
+                    </div>
+                    <!-- Filter Buttons -->
+                    <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                        <button onclick="filterGames('all')" class="game-filter-btn active px-4 py-1.5 rounded-lg text-xs font-tech font-bold bg-military-accent text-navy-900 transition-all">TODOS</button>
+                        <button onclick="filterGames('sim')" class="game-filter-btn px-4 py-1.5 rounded-lg text-xs font-tech font-bold bg-navy-800 text-slate-300 border border-slate-700 hover:border-cyan-400 transition-all">SIMULAÇÃO & AÇÃO</button>
+                        <button onclick="filterGames('ps2')" class="game-filter-btn px-4 py-1.5 rounded-lg text-xs font-tech font-bold bg-navy-800 text-slate-300 border border-slate-700 hover:border-cyan-400 transition-all">CLÁSSICOS PS2</button>
+                    </div>
+                </div>
+
+                <!-- Games Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- War Thunder -->
+                    <div class="game-card sim group p-6 rounded-2xl glass-card relative overflow-hidden transition-all">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 text-9xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-plane-lock"></i>
+                        </div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-md text-[10px] font-tech font-bold bg-red-500/20 text-red-400 border border-red-500/30">COMBATE AÉREO</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-globe"></i> Online</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white group-hover:text-military-accent transition-colors">War Thunder</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Combates aéreos e terrestres hiper-realistas. Perfeito para praticar táticas de dogfight e conhecer aeronaves históricas e modernas.
+                            </p>
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                                <span>Estilo: Simulação Militar</span>
+                                <button onclick="triggerGameAction('War Thunder', 'Decolagem autorizada! Pronto para o combate aéreo.')" class="text-military-accent font-bold hover:underline">Detalhes <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Minecraft -->
+                    <div class="game-card sim group p-6 rounded-2xl glass-card relative overflow-hidden transition-all">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 text-9xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-cube"></i>
+                        </div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-md text-[10px] font-tech font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">CONSTRUÇÃO & MUNDO</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-globe"></i> Online</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white group-hover:text-emerald-400 transition-colors">Minecraft</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Criatividade sem limites para construir bases aéreas, vilas e explorar mundos infinitos com amigos e primos.
+                            </p>
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                                <span>Estilo: Sandbox / Sobrevivência</span>
+                                <button onclick="triggerGameAction('Minecraft', 'Mundo carregado com sucesso! Hora de construir.')" class="text-emerald-400 font-bold hover:underline">Detalhes <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GTA -->
+                    <div class="game-card sim group p-6 rounded-2xl glass-card relative overflow-hidden transition-all">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 text-9xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-car text-yellow-500/10"></i>
+                        </div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-md text-[10px] font-tech font-bold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30">AÇÃO & MUNDO ABERTO</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-globe"></i> Online</span>
+                            </div>
+                            <h3 class="text-2xl font-extrabold text-white group-hover:text-yellow-400 transition-colors">GTA</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Um clássico absoluto. Liberdade total para pilotar helicópteros, aviões de acrobacia e acelerar pela cidade.
+                            </p>
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                                <span>Estilo: Mundo Aberto</span>
+                                <button onclick="triggerGameAction('GTA', 'Missão iniciada! Chaves do helicóptero em mãos.')" class="text-yellow-400 font-bold hover:underline">Detalhes <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Need for Speed Most Wanted 2005 -->
+                    <div class="game-card ps2 group p-6 rounded-2xl glass-card relative overflow-hidden transition-all">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 text-9xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-gauge-high"></i>
+                        </div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-md text-[10px] font-tech font-bold bg-blue-500/20 text-blue-400 border border-blue-500/30">LENDÁRIO PS2</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-compact-disc"></i> Nostalgia</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-white group-hover:text-blue-400 transition-colors">Need for Speed: Most Wanted (2005)</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                O clássico insuperável do PlayStation 2. Corridas alucinantes, perseguições policiais inesquecíveis e a busca pela Lista Negra #1.
+                            </p>
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                                <span>Carro Ícone: BMW M3 GTR</span>
+                                <button onclick="triggerGameAction('NFS Most Wanted', 'Nitro ativado! Fugindo da polícia de Rockport.')" class="text-blue-400 font-bold hover:underline">Detalhes <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Conflict Global Terror -->
+                    <div class="game-card ps2 group p-6 rounded-2xl glass-card relative overflow-hidden transition-all">
+                        <div class="absolute -right-6 -bottom-6 text-slate-800/40 text-9xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-person-military-rifle"></i>
+                        </div>
+                        <div class="relative z-10 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <span class="px-2.5 py-1 rounded-md text-[10px] font-tech font-bold bg-purple-500/20 text-purple-400 border border-purple-500/30">CLÁSSICO PS2</span>
+                                <span class="text-xs text-slate-400"><i class="fa-solid fa-compact-disc"></i> Tático</span>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-white group-hover:text-purple-400 transition-colors">Conflict: Global Terror</h3>
+                            <p class="text-slate-300 text-sm leading-relaxed">
+                                Tática militar de esquadrão no PS2. Missões intensas de resgate e estratégia militar que reforçam o espírito de equipe.
+                            </p>
+                            <div class="pt-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                                <span>Estilo: Ação Tática</span>
+                                <button onclick="triggerGameAction('Conflict: Global Terror', 'Esquadrão em posição. Missão tática iniciada!')" class="text-purple-400 font-bold hover:underline">Detalhes <i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MINHAS COMIDAS FAVORITAS -->
+        <section id="comidas" class="py-20 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <span class="font-tech text-xs font-bold text-gold tracking-widest uppercase">Combustível do Cadete</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mt-2">Pratos Preferidos 🍮</h2>
+                    <p class="text-slate-400 text-sm mt-2">As iguarias que abastecem os dias de estudo e o pós-futebol.</p>
+                    <div class="w-16 h-1 bg-gradient-to-r from-gold to-amber-300 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Pudim -->
+                    <div class="p-6 rounded-2xl glass-card border border-amber-500/20 text-center space-y-4 group">
+                        <div class="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-4xl mx-auto group-hover:scale-110 transition-transform">
+                            🍮
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Pudim de Leite</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            A sobremesa perfeita! Com bastante calda de caramelo e textura super cremosa. Não pode faltar nos momentos de comemoração.
+                        </p>
+                        <div class="pt-3 flex justify-center gap-1 text-gold text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-slate-400 ml-1 font-tech">(10/10)</span>
+                        </div>
+                    </div>
+
+                    <!-- Sorvete -->
+                    <div class="p-6 rounded-2xl glass-card border border-cyan-500/20 text-center space-y-4 group">
+                        <div class="w-20 h-20 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-4xl mx-auto group-hover:scale-110 transition-transform">
+                            🍦
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Sorvete Gelado</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            O alívio perfeito para os dias quentes depois de uma partida disputada de futebol com os primos no bairro.
+                        </p>
+                        <div class="pt-3 flex justify-center gap-1 text-cyan-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-slate-400 ml-1 font-tech">(10/10)</span>
+                        </div>
+                    </div>
+
+                    <!-- Bolo de Milho com Queijo -->
+                    <div class="p-6 rounded-2xl glass-card border border-yellow-500/20 text-center space-y-4 group">
+                        <div class="w-20 h-20 rounded-2xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 flex items-center justify-center text-4xl mx-auto group-hover:scale-110 transition-transform">
+                            🌽
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Bolo de Milho c/ Queijo</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            O autêntico sabor da roça na Chácara União e na casa da vó. A combinação salgada e doce com um café quentinho é imbatível.
+                        </p>
+                        <div class="pt-3 flex justify-center gap-1 text-yellow-400 text-xs">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <span class="text-slate-400 ml-1 font-tech">(Especial da Vó)</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-navy-900 border-t border-slate-800 py-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+            
+            <div class="flex items-center justify-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-military-accent/10 border border-military-accent/40 text-military-accent flex items-center justify-center">
+                    <i class="fa-solid fa-plane-up"></i>
+                </div>
+                <span class="font-tech text-lg font-bold text-white">JOSIEL JANUÁRIO PEREIRA</span>
+            </div>
+
+            <p class="text-slate-400 text-sm max-w-xl mx-auto italic">
+                "As nuvens podem parecer altas, mas com dedicação, disciplina e foco no Ensino Médio, o céu é apenas o ponto de partida."
+            </p>
+
+            <div class="flex justify-center gap-4 text-slate-400">
+                <span class="px-3 py-1 rounded-full bg-navy-800 text-xs border border-slate-700">📍 Campineiro do Sul - PR</span>
+                <span class="px-3 py-1 rounded-full bg-navy-800 text-xs border border-slate-700">✈️ Rumo à AFA</span>
+            </div>
+
+            <div class="text-xs text-slate-500 pt-6 border-t border-slate-800/60">
+                © 2026 Josiel Januário Pereira. Desenvolvido para o perfil GitHub & Portfólio Pessoal.
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT -->
+    <script>
+        // --- 1. RADAR CANVAS ANIMATION ---
+        const canvas = document.getElementById('radarCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let angle = 0;
+        let blips = [
+            { x: 0.25, y: 0.3, label: 'FAB-01 (Gripen)', alpha: 1 },
+            { x: 0.65, y: 0.45, label: 'AFA-2028', alpha: 1 },
+            { x: 0.4, y: 0.7, label: 'A-29 Tucano', alpha: 1 }
+        ];
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function drawRadar() {
+            const width = canvas.width;
+            const height = canvas.height;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(centerX, centerY) * 0.85;
+
+            // Clear canvas with subtle trail effect
+            ctx.fillStyle = 'rgba(6, 11, 25, 0.25)';
+            ctx.fillRect(0, 0, width, height);
+
+            // Draw concentric radar circles
+            ctx.strokeStyle = 'rgba(0, 242, 254, 0.15)';
+            ctx.lineWidth = 1;
+
+            for (let r = 1; r <= 3; r++) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, (radius / 3) * r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Draw Radar Crosshairs
+            ctx.beginPath();
+            ctx.moveTo(centerX - radius, centerY);
+            ctx.lineTo(centerX + radius, centerY);
+            ctx.moveTo(centerX, centerY - radius);
+            ctx.lineTo(centerX, centerY + radius);
+            ctx.stroke();
+
+            // Draw Rotating Sweeper Line
+            const sweepX = centerX + Math.cos(angle) * radius;
+            const sweepY = centerY + Math.sin(angle) * radius;
+
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(sweepX, sweepY);
+            ctx.strokeStyle = 'rgba(0, 242, 254, 0.6)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Gradient Sweep Shadow
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.arc(centerX, centerY, radius, angle - 0.4, angle);
+            ctx.fillStyle = 'rgba(0, 242, 254, 0.05)';
+            ctx.fill();
+
+            // Draw Aircraft Blips
+            blips.forEach(blip => {
+                const bx = width * blip.x;
+                const by = height * blip.y;
+
+                ctx.fillStyle = '#00F2FE';
+                ctx.beginPath();
+                ctx.arc(bx, by, 4, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Ring around blip
+                ctx.strokeStyle = 'rgba(0, 242, 254, 0.4)';
+                ctx.beginPath();
+                ctx.arc(bx, by, 8, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Text label
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+                ctx.font = '10px Orbitron';
+                ctx.fillText(blip.label, bx + 12, by + 4);
+            });
+
+            angle += 0.015;
+            requestAnimationFrame(drawRadar);
+        }
+
+        window.onload = function() {
+            drawRadar();
+        };
+
+        // --- 2. WEB AUDIO API RADAR BEEP ---
+        let audioCtx = null;
+        let isSoundOn = false;
+        let beepInterval = null;
+
+        function toggleRadarBeep() {
+            const soundBtn = document.getElementById('sound-btn');
+            const soundIcon = document.getElementById('sound-icon');
+
+            if (!isSoundOn) {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                isSoundOn = true;
+                soundIcon.className = "fa-solid fa-volume-high text-military-accent";
+                showToast("🔊 Áudio de Radar Ativado!");
+
+                // Play soft periodic radar ping
+                beepInterval = setInterval(() => {
+                    if (isSoundOn && audioCtx) {
+                        playPingSound();
+                    }
+                }, 3500);
+                playPingSound();
+            } else {
+                isSoundOn = false;
+                soundIcon.className = "fa-solid fa-volume-xmark";
+                clearInterval(beepInterval);
+                showToast("🔇 Áudio Mutado.");
+            }
+        }
+
+        function playPingSound() {
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(880, audioCtx.currentTime); // A5 note
+
+                gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            } catch(e) {
+                console.log(e);
+            }
+        }
+
+        // --- 3. TOAST NOTIFICATION SYSTEM ---
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = "pointer-events-auto px-4 py-2.5 rounded-xl bg-navy-800 border border-cyan-500/40 text-xs font-tech text-cyan-300 shadow-lg shadow-black/50 transition-all transform translate-y-2 opacity-0 flex items-center gap-2";
+            toast.innerHTML = `<i class="fa-solid fa-crosshairs text-military-accent"></i> ${message}`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // --- 4. STUDY PROGRESS TRACKER ---
+        function updateStudyProgress() {
+            const checks = document.querySelectorAll('.study-check');
+            let total = checks.length;
+            let checkedCount = 0;
+
+            checks.forEach(c => {
+                if (c.checked) checkedCount++;
+            });
+
+            const percent = Math.round((checkedCount / total) * 100);
+            document.getElementById('progress-percent').innerText = `${percent}%`;
+            document.getElementById('progress-bar-fill').style.width = `${percent}%`;
+
+            if (percent === 100) {
+                showToast("🎯 Excelente! 100% da rotina concluída hoje!");
+            } else {
+                showToast(`📚 Progresso de Estudo: ${percent}%`);
+            }
+        }
+
+        // --- 5. TABS FOR METEOROLOGY & AVIATION DECK ---
+        function switchTab(tab) {
+            const metContent = document.getElementById('tab-meteorology');
+            const avContent = document.getElementById('tab-aviation');
+            const metBtn = document.getElementById('tab-meteo-btn');
+            const avBtn = document.getElementById('tab-avia-btn');
+
+            if (tab === 'meteorology') {
+                metContent.classList.remove('hidden');
+                avContent.classList.add('hidden');
+                metBtn.className = "px-3 py-1 rounded text-xs font-tech bg-cyan-500/20 text-cyan-300 border border-cyan-500/40";
+                avBtn.className = "px-3 py-1 rounded text-xs font-tech bg-navy-800 text-slate-400 border border-slate-700";
+            } else {
+                metContent.classList.add('hidden');
+                avContent.classList.remove('hidden');
+                avBtn.className = "px-3 py-1 rounded text-xs font-tech bg-gold/20 text-gold border border-gold/40";
+                metBtn.className = "px-3 py-1 rounded text-xs font-tech bg-navy-800 text-slate-400 border border-slate-700";
+            }
+        }
+
+        function showMeteoDetail(title, desc) {
+            const box = document.getElementById('meteo-detail-box');
+            box.innerHTML = `<strong class="text-cyan-400 font-tech">${title}:</strong> ${desc}`;
+            showToast(`Informação: ${title}`);
+        }
+
+        // --- 6. GAME FILTERS & ACTIONS ---
+        function filterGames(category) {
+            const cards = document.querySelectorAll('.game-card');
+            const filterBtns = document.querySelectorAll('.game-filter-btn');
+
+            filterBtns.forEach(btn => {
+                btn.className = "game-filter-btn px-4 py-1.5 rounded-lg text-xs font-tech font-bold bg-navy-800 text-slate-300 border border-slate-700 hover:border-cyan-400 transition-all";
+            });
+
+            event.target.className = "game-filter-btn active px-4 py-1.5 rounded-lg text-xs font-tech font-bold bg-military-accent text-navy-900 transition-all";
+
+            cards.forEach(card => {
+                if (category === 'all') {
+                    card.style.display = 'block';
+                } else if (card.classList.contains(category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function triggerGameAction(gameName, message) {
+            showToast(`🎮 ${gameName}: ${message}`);
+        }
+
+        // --- 7. MOBILE MENU TOGGLE ---
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+</body>
+</html>
